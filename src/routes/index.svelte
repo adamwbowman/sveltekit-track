@@ -1,6 +1,5 @@
 <script>
 import Expenses from "./expenses.svelte";
-import { fade, fly } from 'svelte/transition';
 
 function setTag() {
 // todo

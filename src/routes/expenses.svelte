@@ -1,5 +1,5 @@
 <script>
-import { db } from '../lib/firebase'
+import { db } from '$lib/firebase'
 import { collection, query, orderBy, onSnapshot, addDoc, doc, deleteDoc } from "firebase/firestore"; 
 
 let expenses = [];

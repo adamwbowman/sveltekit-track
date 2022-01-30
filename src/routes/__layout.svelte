@@ -3,9 +3,10 @@
 </script>
 
 <div>
-	<a href="/">home</a> |
-	<a href="/about">about</a> |
-	<a href="/detail/Tag132">detail</a>
+	<a href="/previousWeek">previous week</a> | 
+	<a href="/">current week</a> |
+	<a href="/analysis">analysis</a> |
+	date range
 </div>
 
 <slot></slot>
