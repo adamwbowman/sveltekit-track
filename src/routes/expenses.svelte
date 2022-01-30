@@ -19,8 +19,6 @@ console.log(expenses);
 });
 </script>
 
-<div class="expense" 
-	on:click="{() => expenses = [...expenses.slice(0, expenses.length -1)]}"
-	>
+<div class="expense">
 	<slot {expenses} />
 </div>
