@@ -1,4 +1,5 @@
+<script>
 
-<!-- src/routes/about.svelte -->
+</script>
+
 <h1>About</h1>
-

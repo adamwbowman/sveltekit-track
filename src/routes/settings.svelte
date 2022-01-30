@@ -1,3 +1,5 @@
+<script>
 
-<!-- src/routes/settings.svelte -->
+</script>
+
 <h1>Settings</h1>

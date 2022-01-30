@@ -1,4 +1,7 @@
+<script>
 
-<div> header </div>	
+</script>
+
+<div>header</div>
 
 <slot></slot>
