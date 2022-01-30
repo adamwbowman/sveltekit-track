@@ -1,15 +1,26 @@
 <script>
-let contacts = [
-	{ "name": "John", "age": 12 },
-	{ "name": "Jane", "age": 22 },
-	{ "name": "Mary", "age": 32 },
-	{ "name": "Joan", "age": 42 },
-	{ "name": "Jett", "age": 52 },
-	{ "name": "Jimm", "age": 6 },
-];
-console.log(contacts);
+import { db } from '../lib/firebase'
+import { collection, query, orderBy, onSnapshot, addDoc, doc, deleteDoc } from "firebase/firestore"; 
+
+let expenses = [];
+
+// firestore entire get collection
+const expensesCol = collection(db, 'expenses');
+const queryAll = query(expensesCol,
+	orderBy("createdAt", "asc")
+);
+
+// listener for collection reactivity
+const listenCol = onSnapshot(queryAll, (querySnapshot) => {
+	expenses = querySnapshot.docs.map(doc => {
+		return { id: doc.id, ...doc.data() }
+	});
+console.log(expenses);
+});
 </script>
 
-<div class="contact" on:click="{() => contacts = [...contacts.slice(0, contacts.length -1)]}">
-	<slot {contacts} />
+<div class="expense" 
+	on:click="{() => expenses = [...expenses.slice(0, expenses.length -1)]}"
+	>
+	<slot {expenses} />
 </div>
