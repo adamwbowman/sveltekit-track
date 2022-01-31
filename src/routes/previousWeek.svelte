@@ -1,20 +1,19 @@
 <script>
-	import Expenses from "./expenses.svelte";
-	import { previousWeek } from "$lib/dates";
-	
-	console.log(previousWeek);
-	
-	let theWeek = previousWeek;
-	
-	
-	</script>
-	
-	<h1>Previous Week</h1>
-	
-	<Expenses let:expenses>
-		{#each expenses as expense}
-		<div>
-			<a href="/detail/{expense.tag}">{expense.tag}</a> - {expense.dayShort}: {expense.location}
-		</div>
-		{/each}
-	</Expenses>
+import Expenses from "./expenses.svelte";
+import { previousWeek } from "$lib/dates";
+
+let theWeek = previousWeek;
+let startDate = new Date(theWeek.start);
+let endDate = new Date(theWeek.end);
+</script>
+
+<h1>Previous Week</h1>
+<h5>{startDate}<br />{endDate}</h5>
+
+<Expenses let:expenses>
+	{#each expenses.filter(el => {var dbDate = el.createdAt.toDate(); return (dbDate >= startDate && dbDate <= endDate)}) as expense}
+	<div>
+		<a href="/detail/{expense.tag}">{expense.tag}</a> - {expense.dayShort}{expense.date}: {expense.location}
+	</div>
+	{/each}
+</Expenses>
