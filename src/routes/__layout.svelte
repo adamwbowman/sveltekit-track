@@ -1,6 +1,8 @@
 <script>
-let Total = 500;
-let currentRange = "current";
+	import { page } from '$app/stores';
+
+	let Total = 500;
+	let currentRange = "current";
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -13,12 +15,12 @@ let currentRange = "current";
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item">
 					<a class="nav-link {currentRange === 'previous' ? 'active' : ''}" href="/previousWeek"
-					on:click="{() => currentRange = 'previous'}" 
+						on:click="{() => currentRange = 'previous'}" 
 					>Previous Week</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link {currentRange === 'current' ? 'active' : ''}" href="/"
-					on:click="{() => currentRange = 'current'}" 
+						on:click="{() => currentRange = 'current'}" 
 					>Current Week</a>
 				</li>
 			</ul>

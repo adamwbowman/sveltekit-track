@@ -7,13 +7,13 @@ let theWeek = currentWeek;
 let startDate = new Date(theWeek.start);
 let endDate = new Date(theWeek.end);
 
-let subTotal = parseInt(0);
+let subTotal = 0;
 
 function getSubTotal(amount) {
 	if (subTotal == 0) {
-		subTotal = (500-amount).toFixed(2);
+		subTotal = parseFloat((500-amount).toFixed(2));
 	} else {
-		subTotal = (subTotal-amount).toFixed(2);
+		subTotal = parseFloat((subTotal-amount).toFixed(2));
 	}
 	return subTotal;
 }
