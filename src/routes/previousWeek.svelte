@@ -8,7 +8,6 @@ let startDate = new Date(theWeek.start);
 let endDate = new Date(theWeek.end);
 </script>
 
-<h1>Previous Week</h1>
 <h5>{formatShortDate(startDate)} - {formatShortDate(endDate)}</h5>
 
 <Expenses let:expenses>

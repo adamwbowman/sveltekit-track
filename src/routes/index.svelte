@@ -19,7 +19,6 @@ function getSubTotal(amount) {
 }
 </script>
 
-<h1>Current Week</h1>
 <h5>{formatShortDate(startDate)} - {formatShortDate(endDate)}</h5>
 
 <Expenses let:expenses>
