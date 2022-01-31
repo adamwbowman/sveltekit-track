@@ -1,13 +1,6 @@
 <script>
-
 let Total = 500;
 </script>
-
-<div>
-	<a href="/previousWeek">previous week</a> | 
-	<a href="/">current week</a> |
-	<a href="/analysis">analysis</a>
-</div>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 	<div class="container-fluid">
@@ -26,7 +19,6 @@ let Total = 500;
 			</ul>
 			<span class="navbar-text">
 				formattedStartDate - formattedEndDate
-				<!-- {formatShortDate(startDate)} - {formatShortDate(endDate)} -->
 			</span>
 		</div>
 	</div>

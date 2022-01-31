@@ -1,7 +1,7 @@
 <script>
 import Expenses from "./expenses.svelte";
 import { currentWeek, formatShortDate } from "$lib/dates";
-import { fade, fly} from 'svelte/transition';
+import { fly } from 'svelte/transition';
 
 let theWeek = currentWeek;
 let startDate = new Date(theWeek.start);
@@ -23,35 +23,34 @@ function getSubTotal(amount) {
 <h5>{formatShortDate(startDate)} - {formatShortDate(endDate)}</h5>
 
 <Expenses let:expenses>
-<div class="container">
-	{#each expenses.filter(el => {var dbDate = el.createdAt.toDate(); return (dbDate >= startDate && dbDate <= endDate)}) as expense}
-	<div class="row gx-3" 
-		in:fly="{{ y: 200, duration: 2000 }}" 
-		out:fade
-	>
-		<div class="col-1 col-lg-3"></div>
-		<!-- tag -->
-		<div class="col-1 pull-left">
-				<button type="button" class="btn btn-{expense.tagColor} btn-sm"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-					<ion-icon name="{expense.tag}"></ion-icon>
-				</button>
+	<div class="container">
+		{#each expenses.filter(el => {var dbDate = el.createdAt.toDate(); return (dbDate >= startDate && dbDate <= endDate)}) as expense}
+			<div class="row gx-3" 
+				in:fly="{{ y: 200, duration: 2000 }}"
+			>
+				<div class="col-1 col-lg-3"></div>
+				<!-- tag -->
+				<div class="col-1 pull-left">
+						<button type="button" class="btn btn-{expense.tagColor} btn-sm"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+							<ion-icon name="{expense.tag}"></ion-icon>
+						</button>
+					</div>
+				<div class="col-5 col-lg-3">
+					<p class="ps-2 p-md-0">{expense.dayShort}: {expense.location}</p>
+				</div>
+				<div class="col-2 col-lg-1 overflow-auto">
+					<p class="text-end">-{expense.amount}</p>
+				</div>
+				<div class="col-2 col-lg-1 overflow-auto">
+					<p class="text-secondary text-end">{getSubTotal(expense.amount)}</p>
+				</div>
+				<!-- delete button -->
+				<div class="col-1 d-none d-md-block">
+					<button type="button" class="btn btn-outline-secondary btn-sm">
+						<ion-icon name="trash"></ion-icon>
+					</button>
+				</div>
 			</div>
-		<div class="col-5 col-lg-3">
-			<p class="ps-2 p-md-0">{expense.dayShort}: {expense.location}</p>
-		</div>
-		<div class="col-2 col-lg-1 overflow-auto">
-			<p class="text-end">-{expense.amount}</p>
-		</div>
-		<div class="col-2 col-lg-1 overflow-auto">
-			<p class="text-secondary text-end">{getSubTotal(expense.amount)}</p>
-		</div>
-		<!-- delete button -->
-		<div class="col-1 d-none d-md-block">
-			<button type="button" class="btn btn-outline-secondary btn-sm">
-				<ion-icon name="trash"></ion-icon>
-			</button>
-		</div>
+		{/each}
 	</div>
-	{/each}
-</div>
 </Expenses>
