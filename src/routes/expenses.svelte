@@ -2,6 +2,7 @@
 import { db } from '$lib/firebase'
 import { collection, query, orderBy, onSnapshot, addDoc, doc, deleteDoc } from "firebase/firestore"; 
 
+
 let expenses = [];
 
 // firestore entire get collection

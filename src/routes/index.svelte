@@ -1,18 +1,15 @@
 <script>
 import Expenses from "./expenses.svelte";
+import { currentWeek } from "$lib/dates";
 
-function setTag() {
-// todo
-}
-function getSubTotal() {
-// todo
-}
-function deleteExpense() {
-// todo
-}
+console.log(currentWeek);
+
+let theWeek = currentWeek;
+
+
 </script>
 
-<h1>Home</h1>
+<h1>Current Week</h1>
 
 <Expenses let:expenses>
 	{#each expenses as expense}
