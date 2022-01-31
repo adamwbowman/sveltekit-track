@@ -2,7 +2,10 @@
 	import { page } from '$app/stores';
 
 	let Total = 500;
-	let currentRange = "current";
+	let urlPath = $page.url.pathname;
+	console.log("layoutload");
+	console.log(urlPath);
+let currentRange = "current";
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
