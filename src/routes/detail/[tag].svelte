@@ -1,6 +1,6 @@
 <script>
-import { page } from '$app/stores';
-import Expenses from '../expenses.svelte';
+	import { page } from '$app/stores';
+	import Expenses from '../expenses.svelte';
 </script>
 
 <h1>{ $page.params.tag }</h1>

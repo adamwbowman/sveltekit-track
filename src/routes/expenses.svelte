@@ -1,24 +1,29 @@
 <script>
-import { db } from '$lib/firebase'
-import { collection, query, orderBy, onSnapshot, addDoc, doc, deleteDoc } from "firebase/firestore"; 
+	import { db } from '$lib/firebase'
+	import { collection, query, orderBy, onSnapshot, addDoc, doc, deleteDoc } from 'firebase/firestore'; 
 
-let expenses = [];
+	let expenses = [];
 
-// firestore entire get collection
-const expensesCol = collection(db, 'expenses');
-const queryAll = query(expensesCol,
-	orderBy("createdAt", "asc")
-);
+	// firestore entire get collection
+	const expensesCol = collection(db, 'expenses');
+	const queryAll = query(expensesCol,
+		orderBy("createdAt", "asc")
+	);
 
-// listener for collection reactivity
-const listenCol = onSnapshot(queryAll, (querySnapshot) => {
-	expenses = querySnapshot.docs.map(doc => {
-		return { id: doc.id, ...doc.data() }
+	// listener for collection reactivity
+	const listenCol = onSnapshot(queryAll, (querySnapshot) => {
+		expenses = querySnapshot.docs.map(doc => {
+			return { id: doc.id, ...doc.data() }
+		});
+	console.log(expenses);
 	});
-console.log(expenses);
-});
+
+	async function deleteExpense(index) {
+		// resetSubTotal();
+		await deleteDoc(doc(db, "expenses", index));
+	}
 </script>
 
 <div class="expense">
-	<slot {expenses} />
+	<slot {expenses} {deleteExpense} />
 </div>
