@@ -22,3 +22,7 @@ export let previousWeek = weeks.find(el => (parseInt(el.week) == strPreviousWeek
 // export let startDate = new Date(currentWeek.start);
 // export let endDate = new Date(currentWeek.end);
 // console.log(startDate+"-"+endDate);
+
+export function formatShortDate(strDate) { 
+	return strDate.toString().substring(0, 15); 
+}
