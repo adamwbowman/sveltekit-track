@@ -9,7 +9,6 @@ let endDate = new Date(theWeek.end);
 
 <h1>Current Week</h1>
 <h5>{startDate}<br />{endDate}</h5>
-
 <Expenses let:expenses>
 	{#each expenses.filter(el => {var dbDate = el.createdAt.toDate(); return (dbDate >= startDate && dbDate <= endDate)}) as expense}
 	<div>
