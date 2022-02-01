@@ -1,4 +1,5 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { previousWeek, formatShortDate } from '$lib/dates';
 	import Expenses from './expenses.svelte';
 
@@ -15,7 +16,9 @@
 		<div class="row gx-3">
 			<!-- tag -->
 			<div class="col-1 pull-left">
-				<button type="button" class="btn btn-{expense.tagColor} btn-sm"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+				<button type="button" class="btn btn-{expense.tagColor} btn-sm"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"
+					on:click="{() => goto('/detail/'+expense.tag)}"
+				>
 					<ion-icon name="{expense.tag}"></ion-icon>
 				</button>
 			</div>

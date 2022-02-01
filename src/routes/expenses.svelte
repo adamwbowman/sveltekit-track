@@ -15,7 +15,7 @@
 		expenses = querySnapshot.docs.map(doc => {
 			return { id: doc.id, ...doc.data() }
 		});
-	console.log(expenses);
+	// console.log(expenses);
 	});
 
 	async function deleteExpense(index) {
