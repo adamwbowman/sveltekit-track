@@ -12,7 +12,7 @@
 
 	let expensesByTag = [];
 	let years = [], months = [], days = []
-	let allMonths = [1,2,3,4,5,6,7,8,9,10,11,12]
+	let bigTagName, bigTagColor, bigTagLabel
 
 	getExpensesByTag();
 
@@ -29,12 +29,31 @@
 		console.log(years);
 		console.log(months);
 		console.log(days);
+		bigTagName = tagName;
+		bigTagColor = expensesByTag[0].tagColor;
+		switch (tagName) {
+			case "cart": return bigTagLabel = "Groceries"; break;
+			case "logo-amazon": return bigTagLabel = "Amazon"; break;
+			case "home": return bigTagLabel = "House Stuff"; break;
+			case "restaurant": return bigTagLabel = "Eating"; break;
+			case "subway": return bigTagLabel = "Transit"; break;
+			case "shirt": return bigTagLabel = "Clothes"; break;
+			default: return bigTagLabel = "Error"; break;
+		}
 	}
 </script>
 
-<h1>{ tagName }</h1>
 
 <div class="container">
+	<div class="row mt-2">
+		<div class="col-12">
+	<h5>
+		<button type="button" class="btn btn-{bigTagColor}"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+			<ion-icon name="{bigTagName}"></ion-icon>
+		</button>&nbsp; {bigTagLabel}
+	</h5>
+</div>
+</div>
 	<div class="accordion accordion-flush" id="accordionFlushExample">
 	{#each years as year}
 		{#each months as month, index}
