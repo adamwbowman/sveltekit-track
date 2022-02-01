@@ -11,10 +11,8 @@
 	);
 
 	let expensesByTag = [];
-	let years = [], months = [], days = []
-	let bigTagName, bigTagColor, bigTagLabel
-
-	getExpensesByTag();
+	let years = [], months = [], days = [];
+	let bigTagName = "ellipsis-horizontal-circle-outline", bigTagColor = "secondary", bigTagLabel = "";
 
 	async function getExpensesByTag() {
 		const querySnapshot = await getDocs(queryTag);
@@ -24,7 +22,7 @@
 		years = [...new Set(years)];
 		months = expensesByTag.map(el => el.monthVerbose);
 		months = [...new Set(months)];
-		days = expensesByTag.map(el => el.dayShort);
+		days = expensesByTag.map(el => el.day);
 		days = [...new Set(days)];
 		console.log(years);
 		console.log(months);
@@ -41,39 +39,33 @@
 			default: return bigTagLabel = "Error"; break;
 		}
 	}
+
+	getExpensesByTag();
 </script>
 
 
 <div class="container">
-	<div class="row mt-2">
+	<div class="row mb-3 mt-3">
 		<div class="col-12">
-	<h5>
-		<button type="button" class="btn btn-{bigTagColor}"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
-			<ion-icon name="{bigTagName}"></ion-icon>
-		</button>&nbsp; {bigTagLabel}
-	</h5>
-</div>
-</div>
+			<button type="button" class="btn btn-{bigTagColor}">
+				<ion-icon name="{bigTagName}"></ion-icon>
+			</button>&nbsp; {bigTagLabel}
+		</div>
+	</div>
 	<div class="accordion accordion-flush" id="accordionFlushExample">
 	{#each years as year}
-		{#each months as month, index}
+		{#each months as month}
 			<div class="accordion-item">
-				<h2 class="accordion-header" id="flush-heading{index}">
-					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{index}" aria-expanded="false" aria-controls="flush-collapse{index}">
+				<h2 class="accordion-header" id="flush-heading{month}">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{month}" aria-expanded="false" aria-controls="flush-collapse{month}">
 						{year} {month}
 					</button>
 				</h2>
-				<div id="flush-collapse{index}" class="accordion-collapse collapse" aria-labelledby="flush-heading{index}" data-bs-parent="#accordionFlushExample">
+				<div id="flush-collapse{month}" class="accordion-collapse collapse" aria-labelledby="flush-heading{month}" data-bs-parent="#accordionFlushExample">
 					<div class="accordion-body">
-						<div class="container">
 						{#each expensesByTag.filter(el => el.monthVerbose == month) as expense}
-							<div class="row">
-								<div class="col-12">
-									{expense.location}: ${expense.amount}
-								</div>
-							</div>
+							{expense.location}: ${expense.amount}
 						{/each}
-						</div>
 					</div>
 				</div>
 			</div>
