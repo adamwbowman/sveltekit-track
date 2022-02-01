@@ -2,6 +2,7 @@
 	import { page } from '$app/stores';
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, where } from 'firebase/firestore';
+import Expenses from '../expenses.svelte';
 
 	let tagName = $page.params.tag;
 
@@ -46,30 +47,38 @@
 
 <div class="container">
 	<div class="row mb-3 mt-3">
-		<div class="col-12">
+		<div class="col-3"></div>
+		<div class="col-6">
 			<button type="button" class="btn btn-{bigTagColor}">
 				<ion-icon name="{bigTagName}"></ion-icon>
 			</button>&nbsp; {bigTagLabel}
 		</div>
+		<div class="col-3"></div>
 	</div>
-	<div class="accordion accordion-flush" id="accordionFlushExample">
-	{#each years as year}
-		{#each months as month}
-			<div class="accordion-item">
-				<h2 class="accordion-header" id="flush-heading{month}">
-					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{month}" aria-expanded="false" aria-controls="flush-collapse{month}">
-						{year} {month}
-					</button>
-				</h2>
-				<div id="flush-collapse{month}" class="accordion-collapse collapse" aria-labelledby="flush-heading{month}" data-bs-parent="#accordionFlushExample">
-					<div class="accordion-body">
-						{#each expensesByTag.filter(el => el.monthVerbose == month) as expense}
-							{expense.location}: ${expense.amount}
-						{/each}
+	<div class="row mb-3 mt-3">
+		<div class="col-3"></div>
+		<div class="col-6">
+		<div class="accordion accordion-flush" id="accordionFlushExample">
+		{#each years as year}
+			{#each months as month}
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-heading{month}">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{month}" aria-expanded="false" aria-controls="flush-collapse{month}">
+							{year} {month}
+						</button>
+					</h2>
+					<div id="flush-collapse{month}" class="accordion-collapse collapse" aria-labelledby="flush-heading{month}" data-bs-parent="#accordionFlushExample">
+						<div class="accordion-body">
+							{#each expensesByTag.filter(el => el.monthVerbose == month) as expense}
+								{expense.month}.{expense.date} - {expense.location} ${expense.amount} <br />
+							{/each}
+						</div>
 					</div>
 				</div>
-			</div>
+			{/each}
 		{/each}
-	{/each}
+		</div>
+		</div>
+		<div class="col-3"></div>
 	</div>
 </div>
