@@ -26,6 +26,11 @@ let currentRange = "current";
 						on:click="{() => currentRange = 'current'}" 
 					>Current Week</a>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link {currentRange === 'analysis' ? 'active' : ''}" href="/analysis"
+						on:click="{() => currentRange = 'analysis'}" 
+					>Analysis</a>
+				</li>
 			</ul>
 		</div>
 	</div>
