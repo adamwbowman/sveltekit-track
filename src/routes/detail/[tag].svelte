@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, where } from 'firebase/firestore';
-import Expenses from '../expenses.svelte';
 
 	let tagName = $page.params.tag;
 
@@ -13,7 +12,7 @@ import Expenses from '../expenses.svelte';
 
 	let expensesByTag = [];
 	let years = [], months = [], days = [];
-	let bigTagName = "ellipsis-horizontal-circle-outline", bigTagColor = "secondary", bigTagLabel = "";
+	let bigTagName = "", bigTagColor = "secondary", bigTagLabel = "";
 
 	async function getExpensesByTag() {
 		const querySnapshot = await getDocs(queryTag);
