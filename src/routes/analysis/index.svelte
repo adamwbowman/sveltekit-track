@@ -8,32 +8,19 @@
 	);
 
 	let expenses = [];
+	let years = [], months = [], days = [];
 	const tags = ["cart", "home", "logo-amazon", "restaurant", "shirt", "subway"];
 
 	async function getExpenses() {
 		const querySnapshot = await getDocs(queryTag);
 		expenses = querySnapshot.docs.map(doc => doc.data());
 		console.log(expenses);
-		// years = expensesByTag.map(el => el.year);
-		// years = [...new Set(years)];
-		// months = expensesByTag.map(el => el.monthVerbose);
-		// months = [...new Set(months)];
-		// days = expensesByTag.map(el => el.day);
-		// days = [...new Set(days)];
-		// console.log(years);
-		// console.log(months);
-		// console.log(days);
-		// bigTagName = tagName;
-		// bigTagColor = expensesByTag[0].tagColor;
-		// switch (tagName) {
-		// 	case "cart": return bigTagLabel = "Groceries"; break;
-		// 	case "logo-amazon": return bigTagLabel = "Amazon"; break;
-		// 	case "home": return bigTagLabel = "House Stuff"; break;
-		// 	case "restaurant": return bigTagLabel = "Eating"; break;
-		// 	case "subway": return bigTagLabel = "Transit"; break;
-		// 	case "shirt": return bigTagLabel = "Clothes"; break;
-		// 	default: return bigTagLabel = "Error"; break;
-		// }
+		years = expenses.map(el => el.year);
+		years = [...new Set(years)];
+		months = expenses.map(el => el.monthVerbose);
+		months = [...new Set(months)];
+		days = expenses.map(el => el.day);
+		days = [...new Set(days)];
 	}
 
 	getExpenses();
@@ -43,7 +30,7 @@
 	<div class="row">
 		<div class="col">
 		{#each tags as tag}
-			{tag}<br />
+			<b>{tag} - count:{expenses.filter(el => el.tag == tag).length}</b><br />
 			{#each expenses.filter(el => el.tag == tag) as expense}
 				{expense.location} - {expense.tag} - {expense.amount}<br />
 			{/each}
