@@ -30,11 +30,12 @@
 	<div class="row">
 		<div class="col">
 		{#each tags as tag}
-			<b>{tag} - count:{expenses.filter(el => el.tag == tag).length}</b><br />
+			<b>{tag} - count:{expenses.filter(el => (el.tag == tag)).length}</b><br />
 			{#each expenses.filter(el => el.tag == tag) as expense}
 				{expense.location} - {expense.tag} - {expense.amount}<br />
 			{/each}
-			<br />
+			total:{expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)}
+			<br /><br />
 		{/each}
 		</div>
 	</div>
