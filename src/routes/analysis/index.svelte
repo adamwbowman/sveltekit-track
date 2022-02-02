@@ -34,7 +34,8 @@
 			{#each expenses.filter(el => el.tag == tag) as expense}
 				{expense.location} - {expense.tag} - {expense.amount}<br />
 			{/each}
-			total:{expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)}
+			total:{expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)} <br />
+			avg: {(expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)) / (expenses.filter(el => (el.tag == tag)).length)}
 			<br /><br />
 		{/each}
 		</div>
