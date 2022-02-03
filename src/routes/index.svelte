@@ -31,7 +31,7 @@
 			<div class="col-1 col-lg-3"></div>
 			<!-- tag -->
 			<div class="col-1 pull-left">
-					<button type="button" class="btn btn-{expense.tagColor} btn-sm"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions"
+					<button type="button" class="btn btn-{expense.tagColor} btn-sm"
 						on:click="{() => goto('/detail/'+expense.tag)}"
 					>
 						<ion-icon name="{expense.tag}"></ion-icon>

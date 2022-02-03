@@ -22,12 +22,27 @@
 		days = expenses.map(el => el.day);
 		days = [...new Set(days)];
 	}
-
 	getExpenses();
+
+	let tagCount = 0, tagTotal = 0, tagAverage = 0;
+
+	function getTagCalcs(tag) {
+		tagCount = expenses.filter(el => (el.tag == tag)).length;
+		tagTotal = expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)
+		tagAverage = (expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)) / (expenses.filter(el => (el.tag == tag)).length)
+	} 
 </script>
 
 <div class="container">
 	<div class="row">
+		<div class="col-4"><br />
+			{#each tags as tag}
+				<button type="button" class="btn btn-outline-secondary btn-sm"
+				on:click={() => getTagCalcs(tag)}
+				>{tag}</button>
+			{/each}
+			<br />count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}
+		</div>
 		<div class="col-4">
 		<br /><b><u>Expenses by tag</u></b><br /><br />
 		{#each tags as tag}
