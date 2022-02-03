@@ -1,6 +1,8 @@
 <script>
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+	import Scatterplot from './Scatterplot.svelte';
+	import data from './data.js';
 
 	const expensesCol = collection(db, 'expenses');
 	const queryTag = query(expensesCol,
@@ -41,7 +43,10 @@
 				on:click={() => getTagCalcs(tag)}
 				>{tag}</button>
 			{/each}
-			<br />count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}
+			<br />count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br /><br />
+			<div class="chart">
+				<Scatterplot points={data.d}/>
+			</div>
 		</div>
 		<div class="col-4">
 		<br /><b><u>Expenses by tag</u></b><br /><br />
@@ -69,3 +74,14 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.chart {
+		width: 100%;
+		max-width: 640px;
+		height: calc(100% - 4em);
+		min-height: 280px;
+		max-height: 480px;
+		margin: 0 auto;
+	}
+</style>
