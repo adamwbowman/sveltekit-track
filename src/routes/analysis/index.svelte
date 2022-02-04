@@ -1,7 +1,8 @@
 <script>
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-	import Scatterplot from './Scatterplot.svelte';
+	import Scatterplot from './scatterplot.svelte'
+	import Chart from './chart.svelte'
 	import data from './data.js';
 
 	const expensesCol = collection(db, 'expenses');
@@ -37,18 +38,21 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-4"><br />
+		<div class="col-6"><br />
 			{#each tags as tag}
 				<button type="button" class="btn btn-outline-secondary btn-sm"
 				on:click={() => getTagCalcs(tag)}
-				>{tag}</button>
+				>{tag}</button> &nbsp; &nbsp;
 			{/each}
 			<br />count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br /><br />
 			<div class="chart">
 				<Scatterplot points={data.d}/>
 			</div>
+			<div class="chart">
+				<Chart points={data.a}/>
+			</div>
 		</div>
-		<div class="col-4">
+		<div class="col-3">
 		<br /><b><u>Expenses by tag</u></b><br /><br />
 		{#each tags as tag}
 			<b>{tag} - count:{expenses.filter(el => (el.tag == tag)).length}</b><br />
@@ -60,7 +64,7 @@
 			<br /><br />
 		{/each}
 		</div>
-		<div class="col-4">
+		<div class="col-3">
 			<br /><b><u>Expenses by day</u></b><br /><br />
 			{#each days as day}
 				<b>{day} - count:{expenses.filter(el => (el.day == day)).length}</b><br />
