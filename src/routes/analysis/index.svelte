@@ -17,7 +17,7 @@
 	async function getExpenses() {
 		const querySnapshot = await getDocs(queryTag);
 		expenses = querySnapshot.docs.map(doc => doc.data());
-		console.log(expenses);
+// console.log(expenses);
 		years = expenses.map(el => el.year);
 		years = [...new Set(years)];
 		months = expenses.map(el => el.monthVerbose);
@@ -27,12 +27,14 @@
 	}
 	getExpenses();
 
-	let tagCount = 0, tagTotal = 0, tagAverage = 0;
+	let tagCount = 0, tagTotal = 0, tagAverage = 0; 
+	let tagTopFive = [];
 
 	function getTagCalcs(tag) {
 		tagCount = expenses.filter(el => (el.tag == tag)).length;
 		tagTotal = expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)
 		tagAverage = (expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)) / (expenses.filter(el => (el.tag == tag)).length)
+		tagTopFive = expenses.filter(el => (el.tag == tag)).sort((a,b) => b.amount - a.amount).slice(0,5);
 	} 
 </script>
 
@@ -44,7 +46,8 @@
 				on:click={() => getTagCalcs(tag)}
 				>{tag}</button> &nbsp; &nbsp;
 			{/each}
-			<br />count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br /><br />
+			<br />count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br />
+			topFive: {#each tagTopFive as top} {top.location}: ${top.amount}, {/each}<br />
 			<div class="chart">
 				<Scatterplot points={data.d}/>
 			</div>
