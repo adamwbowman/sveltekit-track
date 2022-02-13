@@ -26,7 +26,6 @@
 		months = [...new Set(months)];
 		days = expenses.map(el => el.dayVerbose);
 		days = [...new Set(days)];
-
 	}
 getExpenses();
 
@@ -48,15 +47,15 @@ getExpenses();
 		});
 	} 
 
-	const height = 300;
-	const width = 300;
+	const height = 350;
+	const width = 500;
 	const buffer = 10;
 	const axisSpace = 50;
 
 $: xExtent = [0,6];
 $: yExtent = extent(expenses, (d) => d.amount);
-console.log(xExtent);
 let species = Array.from(new Set(expenses.map((d) => d.amount)));
+console.log(species);
 $: xScale = scaleLinear().domain(xExtent).range([buffer + axisSpace, width - buffer]);
 $: yScale = scaleLinear().domain(yExtent).range([height - buffer - axisSpace, buffer]);
 let colorScale = scaleOrdinal().domain(species).range(colors);
@@ -71,16 +70,17 @@ let colorScale = scaleOrdinal().domain(species).range(colors);
 				>{tag}</button> &nbsp; &nbsp;
 			{/each}
 			<br />count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br />
-			topFive: {#each tagTopFive as top} {top.location}: ${top.amount} {/each}<br />
+			topFive: {#each tagTopFive as top} {top.location}: ${top.amount} {/each}<br /><br />
 
 
 
 			<svg {height} {width}>
 			{#each expenses as item}
 				<circle 
-					r="3" 
-					transform={`translate(${xScale(item.date)} ${yScale(item.amount)})`}
-					fill={colorScale(item.species)} />
+					r="5"
+					transform={`translate(${xScale(item.day)} ${yScale(item.amount)})`}
+					stroke={colorScale(item.species)} 
+					stroke-width="2" fill="none" />
 			{/each}
 		
 			{#each xScale.ticks(5) as tick}
@@ -113,12 +113,12 @@ let colorScale = scaleOrdinal().domain(species).range(colors);
 		<div class="col-3">
 		<br /><b><u>Expenses by tag</u></b><br /><br />
 		{#each tags as tag}
-			<b>{tag} - count:{expenses.filter(el => (el.tag == tag)).length}</b><br />
+			<b>{tag} - count: {expenses.filter(el => (el.tag == tag)).length}</b><br />
 			{#each expenses.filter(el => el.tag == tag) as expense}
 				{expense.tag}:{expense.location} ${expense.amount}<br />
 			{/each}
-			<i>total:{expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)}, 
-			avg: {(expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)) / (expenses.filter(el => (el.tag == tag)).length)}</i>
+			<i>total: ${expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)}, 
+			avg: ${(expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)) / (expenses.filter(el => (el.tag == tag)).length)}</i>
 			<br /><br />
 		{/each}
 		</div>
@@ -126,12 +126,12 @@ let colorScale = scaleOrdinal().domain(species).range(colors);
 		<div class="col-3">
 			<br /><b><u>Expenses by day</u></b><br /><br />
 			{#each days as day}
-				<b>{day} - count:{expenses.filter(el => (el.day == day)).length}</b><br />
-				{#each expenses.filter(el => el.day == day) as expense}
+				<b>{day} - count: {expenses.filter(el => (el.dayVerbose == day)).length}</b><br />
+				{#each expenses.filter(el => el.dayVerbose == day) as expense}
 					{expense.location} - {expense.tag} - {expense.amount}<br />
 				{/each}
-				<i>total:{expenses.filter(el => (el.day == day)).reduce((accum, item) => accum + item.amount, 0)},
-				avg: {(expenses.filter(el => (el.day == day)).reduce((accum, item) => accum + item.amount, 0)) / (expenses.filter(el => (el.day == day)).length)}</i>
+				<i>total: ${expenses.filter(el => (el.dayVerbose == day)).reduce((accum, item) => accum + item.amount, 0)},
+				avg: ${(expenses.filter(el => (el.dayVerbose == day)).reduce((accum, item) => accum + item.amount, 0)) / (expenses.filter(el => (el.dayVerbose == day)).length)}</i>
 				<br /><br />
 			{/each}
 		</div>
