@@ -2,6 +2,7 @@
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 	import { extent, mean, sum } from "d3-array";
+	import { scaleLinear, scaleOrdinal } from "d3-scale";
 
 	const expensesCol = collection(db, 'expenses');
 	const queryTag = query(expensesCol,
@@ -13,6 +14,7 @@
 	let months = [];
 	let days = [];
 	const tags = ["cart", "home", "logo-amazon", "restaurant", "shirt", "subway"];
+	const colors = ["green", "blue", "yellow", "red", "black", "lightblue"];
 
 	async function getExpenses() {
 		const querySnapshot = await getDocs(queryTag);
@@ -24,8 +26,9 @@
 		months = [...new Set(months)];
 		days = expenses.map(el => el.dayVerbose);
 		days = [...new Set(days)];
+
 	}
-	getExpenses();
+getExpenses();
 
 	let tagFilter = [];
 	let tagCount = 0, tagTotal = 0, tagAverage = 0, tagTopOne = 0;
@@ -39,10 +42,24 @@
 		tagTopFive = tagFilter.sort((a,b) => b.amount - a.amount).slice(0,5);
 	
 
+
 		tagFilter = tagFilter.map(el => {
 			return { x: el.day, y: el.amount }
 		});
 	} 
+
+	const height = 300;
+	const width = 300;
+	const buffer = 10;
+	const axisSpace = 50;
+
+$: xExtent = [0,6];
+$: yExtent = extent(expenses, (d) => d.amount);
+console.log(xExtent);
+let species = Array.from(new Set(expenses.map((d) => d.amount)));
+$: xScale = scaleLinear().domain(xExtent).range([buffer + axisSpace, width - buffer]);
+$: yScale = scaleLinear().domain(yExtent).range([height - buffer - axisSpace, buffer]);
+let colorScale = scaleOrdinal().domain(species).range(colors);
 </script>
 
 <div class="container">
@@ -55,10 +72,44 @@
 			{/each}
 			<br />count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br />
 			topFive: {#each tagTopFive as top} {top.location}: ${top.amount} {/each}<br />
+
+
+
+			<svg {height} {width}>
+			{#each expenses as item}
+				<circle 
+					r="3" 
+					transform={`translate(${xScale(item.date)} ${yScale(item.amount)})`}
+					fill={colorScale(item.species)} />
+			{/each}
+		
+			{#each xScale.ticks(5) as tick}
+				<g transform={`translate(${xScale(tick)} ${height - 20})`}>
+					<line y1="-5" y2="0" stroke="black" />
+					<text y="20" text-anchor="middle">{tick}</text>
+				</g>
+			{/each}
+		
+			{#each yScale.ticks(5) as tick}
+				<g transform={`translate(0, ${yScale(tick)})`}>
+					<line x1="35" x2="40" stroke="black" />
+					<text x="30" dominant-baseline="middle" text-anchor="end">{tick}</text>
+				</g>
+			{/each}
+		
+			<g transform={`translate(${width - 100}, ${height - 100})`}>
+				{#each species as species, i }
+					<g transform={`translate(0 ${i * 20})`}>
+						<rect height="10" width="10" fill={colorScale(species)} />
+						<text x="20" y="5" dominant-baseline="middle">{species}</text>
+					</g>
+				{/each}
+			</g>
+			</svg>
+
+
+
 		</div>
-
-
-
 		<div class="col-3">
 		<br /><b><u>Expenses by tag</u></b><br /><br />
 		{#each tags as tag}
@@ -71,7 +122,7 @@
 			<br /><br />
 		{/each}
 		</div>
-		
+
 		<div class="col-3">
 			<br /><b><u>Expenses by day</u></b><br /><br />
 			{#each days as day}
