@@ -13,6 +13,7 @@
 	let years = [];
 	let months = [];
 	let days = [];
+	let species = [];
 	const tags = ["cart", "home", "logo-amazon", "restaurant", "shirt", "subway"];
 	const colors = ["green", "blue", "yellow", "red", "black", "lightblue"];
 
@@ -26,6 +27,8 @@
 		months = [...new Set(months)];
 		days = expenses.map(el => el.dayVerbose);
 		days = [...new Set(days)];
+		species = Array.from(new Set(expenses.map((d) => d.tag)));
+console.log(species);
 	}
 getExpenses();
 
@@ -54,8 +57,6 @@ getExpenses();
 
 $: xExtent = [0,6];
 $: yExtent = extent(expenses, (d) => d.amount);
-let species = Array.from(new Set(expenses.map((d) => d.amount)));
-console.log(species);
 $: xScale = scaleLinear().domain(xExtent).range([buffer + axisSpace, width - buffer]);
 $: yScale = scaleLinear().domain(yExtent).range([height - buffer - axisSpace, buffer]);
 let colorScale = scaleOrdinal().domain(species).range(colors);
@@ -69,7 +70,8 @@ let colorScale = scaleOrdinal().domain(species).range(colors);
 				on:click={() => getTagCalcs(tag)}
 				>{tag}</button> &nbsp; &nbsp;
 			{/each}
-			<br />count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br />
+			<br /><br />
+			count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br />
 			topFive: {#each tagTopFive as top} {top.location}: ${top.amount} {/each}<br /><br />
 
 
@@ -77,10 +79,10 @@ let colorScale = scaleOrdinal().domain(species).range(colors);
 			<svg {height} {width}>
 			{#each expenses as item}
 				<circle 
-					r="5"
+					r="6"
 					transform={`translate(${xScale(item.day)} ${yScale(item.amount)})`}
-					stroke={colorScale(item.species)} 
-					stroke-width="2" fill="none" />
+					fill={colorScale(item.tag)} 
+					opacity="0.5" />
 			{/each}
 		
 			{#each xScale.ticks(5) as tick}
@@ -90,21 +92,21 @@ let colorScale = scaleOrdinal().domain(species).range(colors);
 				</g>
 			{/each}
 		
-			{#each yScale.ticks(5) as tick}
+			{#each yScale.ticks(6) as tick}
 				<g transform={`translate(0, ${yScale(tick)})`}>
 					<line x1="35" x2="40" stroke="black" />
 					<text x="30" dominant-baseline="middle" text-anchor="end">{tick}</text>
 				</g>
 			{/each}
 		
-			<g transform={`translate(${width - 100}, ${height - 100})`}>
+			<!-- <g transform={`translate(${width - 100}, ${height - 100})`}>
 				{#each species as species, i }
 					<g transform={`translate(0 ${i * 20})`}>
 						<rect height="10" width="10" fill={colorScale(species)} />
 						<text x="20" y="5" dominant-baseline="middle">{species}</text>
 					</g>
 				{/each}
-			</g>
+			</g> -->
 			</svg>
 
 
