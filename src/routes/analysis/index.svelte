@@ -1,9 +1,7 @@
 <script>
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, orderBy } from 'firebase/firestore';
-	import Scatterplot from './scatterplot.svelte'
-	import Chart from './chart.svelte'
-	import data from './data.js';
+	import { extent, mean, sum } from "d3-array";
 
 	const expensesCol = collection(db, 'expenses');
 	const queryTag = query(expensesCol,
@@ -11,7 +9,9 @@
 	);
 
 	let expenses = [];
-	let years = [], months = [], days = [];
+	let years = [];
+	let months = [];
+	let days = [];
 	const tags = ["cart", "home", "logo-amazon", "restaurant", "shirt", "subway"];
 
 	async function getExpenses() {
@@ -22,19 +22,26 @@
 		years = [...new Set(years)];
 		months = expenses.map(el => el.monthVerbose);
 		months = [...new Set(months)];
-		days = expenses.map(el => el.day);
+		days = expenses.map(el => el.dayVerbose);
 		days = [...new Set(days)];
 	}
 	getExpenses();
 
-	let tagCount = 0, tagTotal = 0, tagAverage = 0; 
-	let tagTopFive = [];
+	let tagFilter = [];
+	let tagCount = 0, tagTotal = 0, tagAverage = 0, tagTopOne = 0;
+	let tagTopFive = []; 
 
 	function getTagCalcs(tag) {
-		tagCount = expenses.filter(el => (el.tag == tag)).length;
-		tagTotal = expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)
-		tagAverage = (expenses.filter(el => (el.tag == tag)).reduce((accum, item) => accum + item.amount, 0)) / (expenses.filter(el => (el.tag == tag)).length)
-		tagTopFive = expenses.filter(el => (el.tag == tag)).sort((a,b) => b.amount - a.amount).slice(0,5);
+		tagFilter = expenses.filter(el => (el.tag == tag));
+		tagCount = tagFilter.length;
+		tagTotal = sum(tagFilter, (el) => el.amount);
+		tagAverage = mean(tagFilter, (el) => el.amount);
+		tagTopFive = tagFilter.sort((a,b) => b.amount - a.amount).slice(0,5);
+	
+
+		tagFilter = tagFilter.map(el => {
+			return { x: el.day, y: el.amount }
+		});
 	} 
 </script>
 
@@ -47,14 +54,11 @@
 				>{tag}</button> &nbsp; &nbsp;
 			{/each}
 			<br />count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br />
-			topFive: {#each tagTopFive as top} {top.location}: ${top.amount}, {/each}<br />
-			<div class="chart">
-				<Scatterplot points={data.d}/>
-			</div>
-			<div class="chart">
-				<Chart points={data.a}/>
-			</div>
+			topFive: {#each tagTopFive as top} {top.location}: ${top.amount} {/each}<br />
 		</div>
+
+
+
 		<div class="col-3">
 		<br /><b><u>Expenses by tag</u></b><br /><br />
 		{#each tags as tag}
@@ -67,6 +71,7 @@
 			<br /><br />
 		{/each}
 		</div>
+		
 		<div class="col-3">
 			<br /><b><u>Expenses by day</u></b><br /><br />
 			{#each days as day}
@@ -83,12 +88,12 @@
 </div>
 
 <style>
-	.chart {
+	/* .chart {
 		width: 100%;
 		max-width: 640px;
 		height: calc(100% - 4em);
-		min-height: 280px;
-		max-height: 480px;
+		min-height: 5000px;
+		max-height: 500px;
 		margin: 0 auto;
-	}
+	} */
 </style>
