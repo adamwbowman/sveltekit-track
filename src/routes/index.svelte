@@ -62,4 +62,4 @@
 
 <Expenses {expenses} {startDate} {endDate} {getSubTotal} {deleteExpense} />
 
-<Detail {tag} {expenses} />
+<Detail />
