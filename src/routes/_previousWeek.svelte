@@ -1,7 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { previousWeek, formatShortDate } from '$lib/dates';
-	import Expenses from './expenses.svelte';
+	import Expenses from './_expenses.svelte';
 
 	let theWeek = previousWeek;
 	let startDate = new Date(theWeek.start);
