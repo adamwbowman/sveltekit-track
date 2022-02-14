@@ -1,10 +1,13 @@
 <script>
 export let tag;
+export let expenses = [];
+console.log(tag);
+console.log(expenses);
 </script>
 
-<slot {tag} ></slot>
+<slot {tag} {expenses} ></slot>
 
-<svg height="400" width="400">
-	<circle r="20" x="20" y="20" fill="red" />
-	<text x="50" y="50">{tag}</text>
-</svg>
+<p>outside</p>
+{#each expenses as expense}
+	<p>{expense.location}: {expense.amount}</p>
+{/each}

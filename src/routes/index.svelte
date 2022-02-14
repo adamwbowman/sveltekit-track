@@ -1,12 +1,9 @@
 <script>
 	import { db } from '$lib/firebase'
 	import { collection, query, orderBy, onSnapshot, doc, deleteDoc } from 'firebase/firestore'; 
-	import { fly } from 'svelte/transition';
 	import { currentWeek, formatShortDate, previousWeek } from '$lib/dates';
+	import { fly } from 'svelte/transition';
 	import Detail from "./Detail.svelte";
-
-	let Total = 500;
-	let currentRange = "current";
 
 	let expenses = [];
 
@@ -23,6 +20,8 @@
 		});
 	});
 
+	let Total = 500;
+	let currentRange = "current";
 	let theWeek = currentWeek;
 	let subTotal = 0;
 
@@ -54,7 +53,7 @@
 
 	function resetSubTotal(){ subTotal = 0; }
 
-	let tag = "test";
+	let tag = "testable";
 </script>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -120,4 +119,4 @@
 	{/each}
 </div>
 
-<Detail {tag} />
+<Detail {tag} {expenses} />
