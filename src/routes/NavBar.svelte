@@ -6,7 +6,7 @@
 	export let endDate;
 </script>
 
-<slot {currentRange} {setRange} {startDate} {endDate} >
+<slot {currentRange} {startDate} {endDate} {setRange} >
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="/#">$500</a>
