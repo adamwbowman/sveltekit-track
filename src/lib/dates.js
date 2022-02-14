@@ -1,8 +1,7 @@
 
 import weeks from "$lib/weeks.js";
 
-let years = [], months = [], days = [];
-let strMonth, strDay, strMinusWeek
+let strMonth, strDay;
 
 let today = new Date();
 let month = (today.getMonth() +1);
