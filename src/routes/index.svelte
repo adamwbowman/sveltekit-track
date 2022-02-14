@@ -1,9 +1,10 @@
 <script>
 	import { db } from '$lib/firebase'
 	import { collection, query, orderBy, onSnapshot, doc, deleteDoc } from 'firebase/firestore'; 
-	import { currentWeek, formatShortDate, previousWeek } from '$lib/dates';
+	import { currentWeek, previousWeek } from '$lib/dates';
 	import { fly } from 'svelte/transition';
 	import Detail from "./Detail.svelte";
+	import NavBar from "./NavBar.svelte";
 
 	let expenses = [];
 
@@ -20,15 +21,14 @@
 		});
 	});
 
-	let Total = 500;
-	let currentRange = "current";
-	let theWeek = currentWeek;
 	let subTotal = 0;
+	let currentRange = "currentWeek";
+	let theWeek = currentWeek;
 
 	function setRange(range) {
 		resetSubTotal();
 		currentRange = range;
-		if (range == "previous") {
+		if (range == "previousWeek") {
 			theWeek = previousWeek;
 		} else {
 			theWeek = currentWeek;
@@ -56,33 +56,7 @@
 	let tag = "testable";
 </script>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	<div class="container-fluid">
-		<a class="navbar-brand" href="/#">${Total}</a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarText">
-			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				<li class="nav-item">
-					<a class="nav-link {currentRange === 'previous' ? 'active' : ''}" href="/#"
-						on:click="{() => setRange('previous')}">Previous Week</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link {currentRange === 'current' ? 'active' : ''}" href="/#"
-						on:click="{() => setRange('current')}">Current Week</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link {currentRange === 'analysis' ? 'active' : ''}" href="/#"
-						on:click="{() => setRange('analysis')}">Analysis</a>
-				</li>
-			</ul>
-			<span class="navbar-text">
-				{formatShortDate(startDate)} - {formatShortDate(endDate)}
-			</span>
-		</div>
-	</div>
-</nav>
+<NavBar {currentRange} {setRange} {startDate} {endDate} />
 
 <br /><br />
 
