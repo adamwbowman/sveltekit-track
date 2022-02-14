@@ -4,7 +4,6 @@
 	import { currentWeek, previousWeek } from '$lib/dates';
 	import NavBar from "./NavBar.svelte";
 	import Expenses from "./Expenses.svelte";
-	import Detail from "./Detail.svelte";
 
 	let expenses = [];
 
@@ -53,13 +52,13 @@
 	}
 
 	function resetSubTotal(){ subTotal = 0; }
-
-	let tag = "testable";
 </script>
 
 <NavBar {currentRange} {startDate} {endDate} {setRange} />
 <br /><br />
 
-<Expenses {expenses} {startDate} {endDate} {getSubTotal} {deleteExpense} />
-
-<Detail />
+<div class="container">
+	{#each expenses.filter(el => {var dbDate = el.createdAt.toDate(); return (dbDate >= startDate && dbDate <= endDate)}) as expense}
+		<Expenses {expense} {getSubTotal} {deleteExpense} />
+	{/each}
+</div>

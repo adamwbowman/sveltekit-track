@@ -43,7 +43,6 @@
 	getExpensesByTag();
 </script>
 
-
 <div class="container">
 	<div class="row mb-3 mt-3">
 		<div class="col-3"></div>
