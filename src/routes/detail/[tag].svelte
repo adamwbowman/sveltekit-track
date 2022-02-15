@@ -2,8 +2,6 @@
 	import { page } from '$app/stores';
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, where } from 'firebase/firestore';
-	import { extent, mean, sum } from "d3-array";
-	import { scaleLinear, scaleOrdinal } from "d3-scale";
 
 	let tagName = $page.params.tag;
 
@@ -16,7 +14,6 @@
 	let years = [];
 	let months = [];
 	let days = [];
-	// let species = [];
 
 	async function getExpenses() {
 		const querySnapshot = await getDocs(queryTag);
@@ -28,23 +25,12 @@
 		months = [...new Set(months)];
 		days = expenses.map(el => el.dayVerbose);
 		days = [...new Set(days)];
-// 		species = Array.from(new Set(expenses.map((d) => d.tag)));
-// console.log(species);
 	}
 getExpenses();
 
 </script>
 
 <div class="container">
-	<!-- <div class="row mb-3 mt-3">
-		<div class="col-3"></div>
-		<div class="col-6">
-			<button type="button" class="btn btn-{bigTagColor}">
-				<ion-icon name="{bigTagName}"></ion-icon>
-			</button>&nbsp; {bigTagLabel}
-		</div>
-		<div class="col-3"></div>
-	</div> -->
 	<div class="row mb-3 mt-3">
 		<div class="col-3"></div>
 		<div class="col-6">
