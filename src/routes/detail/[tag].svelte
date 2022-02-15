@@ -2,6 +2,8 @@
 	import { page } from '$app/stores';
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, where } from 'firebase/firestore';
+	import { extent, mean, sum } from "d3-array";
+	import { scaleLinear, scaleOrdinal } from "d3-scale";
 
 	let tagName = $page.params.tag;
 
@@ -10,41 +12,31 @@
 		where("tag", "==", tagName)
 	);
 
-	let expensesByTag = [];
-	let years = [], months = [], days = [];
-	let bigTagName = "", bigTagColor = "secondary", bigTagLabel = "";
+	let expenses = [];
+	let years = [];
+	let months = [];
+	let days = [];
+	// let species = [];
 
-	async function getExpensesByTag() {
+	async function getExpenses() {
 		const querySnapshot = await getDocs(queryTag);
-		expensesByTag = querySnapshot.docs.map(doc => doc.data());
-		console.log(expensesByTag);
-		years = expensesByTag.map(el => el.year);
+		expenses = querySnapshot.docs.map(doc => doc.data());
+// console.log(expenses);
+		years = expenses.map(el => el.year);
 		years = [...new Set(years)];
-		months = expensesByTag.map(el => el.monthVerbose);
+		months = expenses.map(el => el.monthVerbose);
 		months = [...new Set(months)];
-		days = expensesByTag.map(el => el.day);
+		days = expenses.map(el => el.dayVerbose);
 		days = [...new Set(days)];
-		console.log(years);
-		console.log(months);
-		console.log(days);
-		bigTagName = tagName;
-		bigTagColor = expensesByTag[0].tagColor;
-		switch (tagName) {
-			case "cart": return bigTagLabel = "Groceries"; break;
-			case "logo-amazon": return bigTagLabel = "Amazon"; break;
-			case "home": return bigTagLabel = "House Stuff"; break;
-			case "restaurant": return bigTagLabel = "Eating"; break;
-			case "subway": return bigTagLabel = "Transit"; break;
-			case "shirt": return bigTagLabel = "Clothes"; break;
-			default: return bigTagLabel = "Error"; break;
-		}
+// 		species = Array.from(new Set(expenses.map((d) => d.tag)));
+// console.log(species);
 	}
+getExpenses();
 
-	getExpensesByTag();
 </script>
 
 <div class="container">
-	<div class="row mb-3 mt-3">
+	<!-- <div class="row mb-3 mt-3">
 		<div class="col-3"></div>
 		<div class="col-6">
 			<button type="button" class="btn btn-{bigTagColor}">
@@ -52,7 +44,7 @@
 			</button>&nbsp; {bigTagLabel}
 		</div>
 		<div class="col-3"></div>
-	</div>
+	</div> -->
 	<div class="row mb-3 mt-3">
 		<div class="col-3"></div>
 		<div class="col-6">
@@ -67,8 +59,23 @@
 					</h2>
 					<div id="flush-collapse{month}" class="accordion-collapse collapse" aria-labelledby="flush-heading{month}" data-bs-parent="#accordionFlushExample">
 						<div class="accordion-body">
-							{#each expensesByTag.filter(el => el.monthVerbose == month) as expense}
-								{expense.month}.{expense.date} - {expense.location} ${expense.amount} <br />
+							{#each expenses.filter(el => el.monthVerbose == month) as expense}
+							<div class="row gx-3">
+								<div class="col-1"></div>
+								<!-- tag -->
+								<div class="col-1 pull-left">
+										<button type="button" class="btn btn-{expense.tagColor} btn-sm">
+											<ion-icon name="{expense.tag}"></ion-icon>
+										</button>
+									</div>
+								<div class="col-5">
+									<p class="ps-2 p-md-0">{expense.month}/{expense.date}: {expense.location}</p>
+								</div>
+								<div class="col-4 overflow-auto">
+									<p class="text-end">${expense.amount}</p>
+								</div>
+								<div class="col-1"></div>
+							</div>
 							{/each}
 						</div>
 					</div>

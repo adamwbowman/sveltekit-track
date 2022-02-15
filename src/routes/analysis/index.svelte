@@ -27,8 +27,8 @@
 		months = [...new Set(months)];
 		days = expenses.map(el => el.dayVerbose);
 		days = [...new Set(days)];
-		species = Array.from(new Set(expenses.map((d) => d.tag)));
-console.log(species);
+// 		species = Array.from(new Set(expenses.map((d) => d.tag)));
+// console.log(species);
 	}
 getExpenses();
 
@@ -42,9 +42,6 @@ getExpenses();
 		tagTotal = sum(tagFilter, (el) => el.amount);
 		tagAverage = mean(tagFilter, (el) => el.amount);
 		tagTopFive = tagFilter.sort((a,b) => b.amount - a.amount).slice(0,5);
-	
-
-
 		tagFilter = tagFilter.map(el => {
 			return { x: el.day, y: el.amount }
 		});
@@ -55,11 +52,11 @@ getExpenses();
 	const buffer = 10;
 	const axisSpace = 50;
 
-$: xExtent = [0,6];
-$: yExtent = extent(expenses, (d) => d.amount);
-$: xScale = scaleLinear().domain(xExtent).range([buffer + axisSpace, width - buffer]);
-$: yScale = scaleLinear().domain(yExtent).range([height - buffer - axisSpace, buffer]);
-let colorScale = scaleOrdinal().domain(species).range(colors);
+	$: xExtent = [0,6];
+	$: yExtent = extent(expenses, (d) => d.amount);
+	$: xScale = scaleLinear().domain(xExtent).range([buffer + axisSpace, width - buffer]);
+	$: yScale = scaleLinear().domain(yExtent).range([height - buffer - axisSpace, buffer]);
+	let colorScale = scaleOrdinal().domain(species).range(colors);
 </script>
 
 <div class="container">
