@@ -1,7 +1,13 @@
 <script>
+	import { goto } from "$app/navigation";
+
 	export let expense;
 	export let getSubTotal;
 	export let deleteExpense;
+
+	function showDetail(tag) {
+		goto('/detail/'+tag);
+	}
 </script>
 
 <slot {expense} {getSubTotal} {deleteExpense} >
@@ -9,7 +15,9 @@
 		<div class="col-1 col-lg-3"></div>
 		<!-- tag -->
 		<div class="col-1 pull-left">
-				<button type="button" class="btn btn-{expense.tagColor} btn-sm">
+				<button type="button" class="btn btn-{expense.tagColor} btn-sm"
+					on:click="{() => showDetail(expense.tag)}"
+				>
 					<ion-icon name="{expense.tag}"></ion-icon>
 				</button>
 			</div>
