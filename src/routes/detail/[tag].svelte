@@ -2,6 +2,8 @@
 	import { page } from '$app/stores';
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, where } from 'firebase/firestore';
+	import { extent, mean, sum } from "d3-array";
+	import { scaleLinear, scaleOrdinal } from "d3-scale";
 
 	let tagName = $page.params.tag;
 
@@ -28,9 +30,31 @@
 	}
 getExpenses();
 
+	const height = 500;
+	const width = 100;
+	const buffer = 10;
+	const axisSpace = 50;
+
+	$: xExtent = [0,6];
+	$: yExtent = extent(expenses, (d) => d.amount);
+	$: xScale = scaleLinear().domain(xExtent).range([buffer + axisSpace, width - buffer]);
+	$: yScale = scaleLinear().domain(yExtent).range([height - buffer - axisSpace, buffer]);
 </script>
 
 <div class="container">
+
+	<div class="row mb-3 mt-3">
+		<div class="col-3"></div>
+		<div class="col-6">
+
+			<svg>
+
+
+			</svg>
+
+		</div>
+		<div class="col-3"></div>
+	</div>
 	<div class="row mb-3 mt-3">
 		<div class="col-3"></div>
 		<div class="col-6">
@@ -73,3 +97,11 @@ getExpenses();
 		<div class="col-3"></div>
 	</div>
 </div>
+
+<style>
+	svg {
+		border: 1px solid #ddd;
+		width: 100%;
+		height: 100px;
+		}
+</style>

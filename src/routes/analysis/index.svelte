@@ -42,9 +42,6 @@ getExpenses();
 		tagTotal = sum(tagFilter, (el) => el.amount);
 		tagAverage = mean(tagFilter, (el) => el.amount);
 		tagTopFive = tagFilter.sort((a,b) => b.amount - a.amount).slice(0,5);
-		tagFilter = tagFilter.map(el => {
-			return { x: el.day, y: el.amount }
-		});
 	} 
 
 	const height = 350;
@@ -70,44 +67,28 @@ getExpenses();
 			<br /><br />
 			count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br />
 			topFive: {#each tagTopFive as top} {top.location}: ${top.amount} {/each}<br /><br />
-
-
-
 			<svg {height} {width}>
 			{#each expenses as item}
 				<circle 
 					r="6"
 					transform={`translate(${xScale(item.day)} ${yScale(item.amount)})`}
 					fill={colorScale(item.tag)} 
-					opacity="0.5" />
+					opacity="0.5" 
+				/>
 			{/each}
-		
 			{#each xScale.ticks(5) as tick}
 				<g transform={`translate(${xScale(tick)} ${height - 20})`}>
 					<line y1="-5" y2="0" stroke="black" />
 					<text y="20" text-anchor="middle">{tick}</text>
 				</g>
 			{/each}
-		
 			{#each yScale.ticks(6) as tick}
 				<g transform={`translate(0, ${yScale(tick)})`}>
 					<line x1="35" x2="40" stroke="black" />
 					<text x="30" dominant-baseline="middle" text-anchor="end">{tick}</text>
 				</g>
 			{/each}
-		
-			<!-- <g transform={`translate(${width - 100}, ${height - 100})`}>
-				{#each species as species, i }
-					<g transform={`translate(0 ${i * 20})`}>
-						<rect height="10" width="10" fill={colorScale(species)} />
-						<text x="20" y="5" dominant-baseline="middle">{species}</text>
-					</g>
-				{/each}
-			</g> -->
 			</svg>
-
-
-
 		</div>
 		<div class="col-3">
 		<br /><b><u>Expenses by tag</u></b><br /><br />
@@ -121,7 +102,6 @@ getExpenses();
 			<br /><br />
 		{/each}
 		</div>
-
 		<div class="col-3">
 			<br /><b><u>Expenses by day</u></b><br /><br />
 			{#each days as day}
@@ -136,14 +116,3 @@ getExpenses();
 		</div>
 	</div>
 </div>
-
-<style>
-	/* .chart {
-		width: 100%;
-		max-width: 640px;
-		height: calc(100% - 4em);
-		min-height: 5000px;
-		max-height: 500px;
-		margin: 0 auto;
-	} */
-</style>
