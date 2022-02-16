@@ -32,17 +32,17 @@
 	}
 getExpenses();
 
-	let tagFilter = [];
-	let tagCount = 0, tagTotal = 0, tagAverage = 0, tagTopOne = 0;
-	let tagTopFive = []; 
+	// let tagFilter = [];
+	// let tagCount = 0, tagTotal = 0, tagAverage = 0, tagTopOne = 0;
+	// let tagTopFive = []; 
 
-	function getTagCalcs(tag) {
-		tagFilter = expenses.filter(el => (el.tag == tag));
-		tagCount = tagFilter.length;
-		tagTotal = sum(tagFilter, (el) => el.amount);
-		tagAverage = mean(tagFilter, (el) => el.amount);
-		tagTopFive = tagFilter.sort((a,b) => b.amount - a.amount).slice(0,5);
-	} 
+	// function getTagCalcs(tag) {
+	// 	tagFilter = expenses.filter(el => (el.tag == tag));
+	// 	tagCount = tagFilter.length;
+	// 	tagTotal = sum(tagFilter, (el) => el.amount);
+	// 	tagAverage = mean(tagFilter, (el) => el.amount);
+	// 	tagTopFive = tagFilter.sort((a,b) => b.amount - a.amount).slice(0,5);
+	// } 
 
 	const height = 350;
 	const width = 500;
@@ -60,14 +60,11 @@ getExpenses();
 	<div class="row">
 		<div class="col-6"><br />
 			{#each tags as tag}
-				<button type="button" class="btn btn-outline-secondary btn-sm"
-				on:click={() => getTagCalcs(tag)}
-				>{tag}</button> &nbsp; &nbsp;
+				<button type="button" class="btn btn-outline-secondary btn-sm">{tag}</button> &nbsp; &nbsp;
 			{/each}
-			<br /><br />
-			count: {tagCount}, total: ${tagTotal}, average: ${tagAverage}<br />
-			topFive: {#each tagTopFive as top} {top.location}: ${top.amount} {/each}<br /><br />
+			<br /><br /><br />
 			<svg {height} {width}>
+		<!-- plot data -->
 			{#each expenses as item}
 				<circle 
 					r="6"
@@ -76,12 +73,14 @@ getExpenses();
 					opacity="0.5" 
 				/>
 			{/each}
+		<!-- x-axis -->
 			{#each xScale.ticks(5) as tick}
 				<g transform={`translate(${xScale(tick)} ${height - 20})`}>
 					<line y1="-5" y2="0" stroke="black" />
 					<text y="20" text-anchor="middle">{tick}</text>
 				</g>
 			{/each}
+		<!-- y-axis -->
 			{#each yScale.ticks(6) as tick}
 				<g transform={`translate(0, ${yScale(tick)})`}>
 					<line x1="35" x2="40" stroke="black" />
