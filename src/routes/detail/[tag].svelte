@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, where } from 'firebase/firestore';
-	import { extent, mean, sum } from "d3-array";
+	import { extent, least, mean, sum } from "d3-array";
 	import { scaleLinear, scaleOrdinal } from "d3-scale";
 
 	let tagName = $page.params.tag;
@@ -18,6 +18,7 @@
 	let months = [];
 	let days = [];
 	let tagTopFive = []; 
+	let tagMin = {};
 
 	async function getExpenses() {
 		const querySnapshot = await getDocs(queryTag);
@@ -30,9 +31,11 @@
 		days = expenses.map(el => el.dayVerbose);
 		days = [...new Set(days)];
 		tagCount = expenses.length;
-		tagTotal = sum(expenses, (el) => el.amount);
-		tagAverage = mean(expenses, (el) => el.amount);
+		tagTotal = sum(expenses, d => d.amount);
+		tagAverage = mean(expenses, d => d.amount);
 		tagTopFive = expenses.sort((a,b) => b.amount - a.amount).slice(0,5);
+		tagMin = least(expenses, d => d.amount);
+		console.log(tagMin);
 	}
 getExpenses();
 
@@ -50,7 +53,14 @@ getExpenses();
 <div class="container">
 
 	<div class="row mb-3 mt-3">
-		<div class="col-3"></div>
+		<div class="col-3 d-flex align-items-center border">
+			<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">
+				<button type="button" class="btn btn-{tagMin.tagColor}"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
+					<ion-icon name="{tagMin.tag}"></ion-icon>
+				</button>
+				&nbsp; {tagMin.tag}
+			</h5>
+		</div>
 		<div class="col-6">
 
 			<svg>
@@ -62,7 +72,7 @@ getExpenses();
 		<div class="col-3"></div>
 	</div>
 	<div class="row mb-3 mt-3">
-		<div class="col-3">
+		<div height="100%" class="col-3">
 			<br />
 			<b>Total # of Purchases:</b> {tagCount}<br /><br />
 			<b>Sum of All Purchases:</b> ${tagTotal.toFixed(2)}<br /><br />
