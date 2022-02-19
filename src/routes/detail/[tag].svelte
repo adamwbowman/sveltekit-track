@@ -53,7 +53,7 @@ getExpenses();
 <div class="container">
 
 	<div class="row mb-3 mt-3">
-		<div class="col-3 d-flex align-items-center border">
+		<div class="col-3 d-flex align-items-center">
 			<h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">
 				<button type="button" class="btn btn-{tagMin.tagColor}"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions" aria-controls="offcanvasWithBothOptions">
 					<ion-icon name="{tagMin.tag}"></ion-icon>
@@ -109,6 +109,13 @@ getExpenses();
 								<div class="col-1"></div>
 							</div>
 							{/each}
+							<div class="row gx-3">
+								<div class="col-7"></div>
+								<div class="col-4 overflow-auto">
+									<p class="text-end">Total: &nbsp; ${sum((expenses.filter(el => el.monthVerbose == month)), el => el.amount)}</p>
+								</div>
+								<div class="col-1"></div>
+							</div>
 						</div>
 					</div>
 				</div>
