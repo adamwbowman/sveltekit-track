@@ -14,9 +14,7 @@
 					<a class="nav-link active" href="/#">&nbsp;</a>
 				</li>
 			</ul>
-			<span class="navbar-text">
-				All Items
-			</span>
+			<span class="navbar-text">All Items &nbsp; </span>
 		</div>
 	</div>
 </nav>

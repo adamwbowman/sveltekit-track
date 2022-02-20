@@ -4,6 +4,7 @@
 	import { collection, getDocs, query, where } from 'firebase/firestore';
 	import { extent, least, mean, sum } from "d3-array";
 	import { scaleLinear, scaleOrdinal } from "d3-scale";
+import { text } from 'svelte/internal';
 
 	let tagName = $page.params.tag;
 
@@ -39,12 +40,12 @@
 	}
 getExpenses();
 
-	const height = 500;
-	const width = 100;
+	const height = 100;
+	const width = 650;
 	const buffer = 10;
 	const axisSpace = 50;
 
-	$: xExtent = [0,6];
+	$: xExtent = [0,11];
 	$: yExtent = extent(expenses, (d) => d.amount);
 	$: xScale = scaleLinear().domain(xExtent).range([buffer + axisSpace, width - buffer]);
 	$: yScale = scaleLinear().domain(yExtent).range([height - buffer - axisSpace, buffer]);
@@ -63,8 +64,50 @@ getExpenses();
 		</div>
 		<div class="col-6">
 
-			<svg>
+			{#each xScale.ticks(10) as tick}
+				{tick}, 
+			{/each}
+			<br />
+			{#each yScale.ticks(10) as tick}
+				{tick}, 
+			{/each}
 
+
+			<svg {height} {width}>
+				<g transform="translate(0 70)">
+					<rect width="50" height="25" fill="red" />
+				</g>
+				<g transform="translate(51 60)">
+					<rect width="50" height="35" fill="red" />
+				</g>
+				<g transform="translate(102 45)">
+					<rect width="50" height="50" fill="red" />
+				</g>
+
+				<g class='bars'>
+					{#each months as month, i}
+					{#each expenses.filter(el => el.monthVerbose == month) as expense, i}
+					<rect
+					x="{xScale(i) + 2}"
+					y="{yScale(expense.amount)}"
+					width="{50 - 4}"
+					height="{yScale(0) - yScale(expense.amount)}"
+					></rect>
+					<!-- <rect
+							x="{xScale(i) + 2}"
+							y="{yScale(expense.amount)}"
+							width="{barWidth - 4}"
+							height="{yScale(0) - yScale(point.birthrate)}"
+						></rect> -->
+					{/each}
+					{/each}
+				</g>
+
+				{#each xScale.ticks(10) as tick}
+				<g transform={`translate(${xScale(tick)} ${height - 0})`}>
+					<line y1="-5" y2="0" stroke="black" />
+				</g>
+				{/each}
 
 			</svg>
 
@@ -130,7 +173,7 @@ getExpenses();
 <style>
 	svg {
 		border: 1px solid #ddd;
-		width: 100%;
-		height: 100px;
+		/* width: 100%;
+		height: 100px; */
 		}
 </style>

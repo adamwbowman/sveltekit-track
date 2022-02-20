@@ -9,7 +9,7 @@
 <slot {currentRange} {startDate} {endDate} {setRange} >
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="/#">$500</a>
+			<a class="navbar-brand" href="/#"> &nbsp; $500</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -28,9 +28,7 @@
 							on:click="{() => setRange('analysis')}">Analysis</a>
 					</li>
 				</ul>
-				<span class="navbar-text">
-					{formatShortDate(startDate)} - {formatShortDate(endDate)}
-				</span>
+				<span class="navbar-text">{formatShortDate(startDate)} - {formatShortDate(endDate)} &nbsp; </span>
 			</div>
 		</div>
 	</nav>
