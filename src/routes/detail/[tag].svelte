@@ -4,7 +4,6 @@
 	import { collection, getDocs, query, where } from 'firebase/firestore';
 	import { extent, least, mean, sum } from "d3-array";
 	import { scaleLinear, scaleOrdinal } from "d3-scale";
-import { text } from 'svelte/internal';
 
 	let tagName = $page.params.tag;
 
@@ -36,7 +35,6 @@ import { text } from 'svelte/internal';
 		tagAverage = mean(expenses, d => d.amount);
 		tagTopFive = expenses.sort((a,b) => b.amount - a.amount).slice(0,5);
 		tagMin = least(expenses, d => d.amount);
-		console.log(tagMin);
 	}
 getExpenses();
 
@@ -50,6 +48,7 @@ getExpenses();
 	$: xScale = scaleLinear().domain(xExtent).range([buffer + axisSpace, width - buffer]);
 	$: yScale = scaleLinear().domain(yExtent).range([height - buffer - axisSpace, buffer]);
 </script>
+
 
 <div class="container">
 
@@ -74,7 +73,7 @@ getExpenses();
 
 
 			<svg {height} {width}>
-				<g transform="translate(0 70)">
+				<!-- <g transform="translate(0 70)">
 					<rect width="50" height="25" fill="red" />
 				</g>
 				<g transform="translate(51 60)">
@@ -82,9 +81,9 @@ getExpenses();
 				</g>
 				<g transform="translate(102 45)">
 					<rect width="50" height="50" fill="red" />
-				</g>
+				</g> -->
 
-				<g class='bars'>
+				<g class='bars' transform="translate(-25 50)">
 					{#each months as month, i}
 					{#each expenses.filter(el => el.monthVerbose == month) as expense, i}
 					<rect
