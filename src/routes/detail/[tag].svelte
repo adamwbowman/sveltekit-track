@@ -3,7 +3,7 @@
 	import { db } from '$lib/firebase';
 	import { collection, getDocs, query, where } from 'firebase/firestore';
 	import { extent, least, mean, sum } from "d3-array";
-	import { scaleLinear, scaleOrdinal } from "d3-scale";
+	import { scaleLinear } from "d3-scale";
 
 	let tagName = $page.params.tag;
 
@@ -39,7 +39,7 @@
 getExpenses();
 
 	const height = 100;
-	const width = 650;
+	const width = 600;
 	const buffer = 10;
 	const axisSpace = 50;
 	const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
@@ -84,29 +84,24 @@ getExpenses();
 					<rect width="50" height="50" fill="red" />
 				</g> -->
 
-				<g class='bars' transform="translate(-25 50)">
-					{#each months as month, i}
-					{#each expenses.filter(el => el.monthVerbose == month) as expense, i}
-					<rect
-					x="{xScale(i) + 2}"
-					y="{yScale(expense.amount)}"
-					width="{50 - 4}"
-					height="{yScale(0) - yScale(expense.amount)}"
-					></rect>
-					<!-- <rect
+				<g class='bars' transform="translate(-50 50)">
+					{#each months as month}
+						{#each expenses.filter(el => el.monthVerbose == month) as expense, i}
+							<rect
 							x="{xScale(i) + 2}"
 							y="{yScale(expense.amount)}"
-							width="{barWidth - 4}"
-							height="{yScale(0) - yScale(point.birthrate)}"
-						></rect> -->
-					{/each}
+							width="{50 - 4}"
+							height="{yScale(0) - yScale(expense.amount)}"
+							></rect>
+						{/each}
 					{/each}
 				</g>
 
-				{#each xScale.ticks(10) as tick, i}
-				<g transform={`translate(${xScale(tick)} ${height - 0})`}>
-					<text x="-15" y="-3">xxx</text>
-					<line y1="-5" y2="0" stroke="black" />
+				{#each xScale.ticks(10) as tick}
+				<g transform={`translate(${xScale(tick)-30} ${height - 0})`}>
+					<!-- <text x="-15" y="-3">{labels[tick]}</text> -->
+					<text x="-15" y="-3">xxxxx</text>
+					<!-- <line y1="-5" y2="0" stroke="black" /> -->
 				</g>
 				{/each}
 
