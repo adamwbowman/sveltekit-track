@@ -84,23 +84,22 @@ getExpenses();
 					<rect width="50" height="50" fill="red" />
 				</g> -->
 
-				<g class='bars' transform="translate(-50 50)">
-					{#each months as month}
-						{#each expenses.filter(el => el.monthVerbose == month) as expense, i}
+				<g class='bars' transform="translate(-52 50)">
+					{#each labels as month, i}
+						{#each expenses.filter(el => el.monthShort == month) as expense}
 							<rect
 							x="{xScale(i) + 2}"
-							y="{yScale(expense.amount)}"
+							y="{yScale(sum(expenses, d => d.amount))}"
 							width="{50 - 4}"
-							height="{yScale(0) - yScale(expense.amount)}"
+							height="{yScale(0) - yScale(sum(expenses, d => d.amount))}"
 							></rect>
 						{/each}
 					{/each}
 				</g>
 
 				{#each xScale.ticks(10) as tick}
-				<g transform={`translate(${xScale(tick)-30} ${height - 0})`}>
-					<!-- <text x="-15" y="-3">{labels[tick]}</text> -->
-					<text x="-15" y="-3">xxxxx</text>
+				<g transform={`translate(${xScale(tick)-25} ${height - 0})`}>
+					<text x="-15" y="-3">{labels[tick]}</text>
 					<!-- <line y1="-5" y2="0" stroke="black" /> -->
 				</g>
 				{/each}
