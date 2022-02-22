@@ -42,6 +42,7 @@ getExpenses();
 	const width = 650;
 	const buffer = 10;
 	const axisSpace = 50;
+	const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 	$: xExtent = [0,11];
 	$: yExtent = extent(expenses, (d) => d.amount);
@@ -102,8 +103,9 @@ getExpenses();
 					{/each}
 				</g>
 
-				{#each xScale.ticks(10) as tick}
+				{#each xScale.ticks(10) as tick, i}
 				<g transform={`translate(${xScale(tick)} ${height - 0})`}>
+					<text x="-15" y="-3">xxx</text>
 					<line y1="-5" y2="0" stroke="black" />
 				</g>
 				{/each}
