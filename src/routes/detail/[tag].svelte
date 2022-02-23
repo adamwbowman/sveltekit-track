@@ -38,6 +38,21 @@
 	}
 getExpenses();
 
+	const bootstrapColors = [
+		{ hex: "#0275d8", name: "primary" },
+		{ hex: "#5cb85c", name: "success" },
+		{ hex: "#5bc0de", name: "info" },
+		{ hex: "#f0ad4e", name: "warning" },
+		{ hex: "#d9534f", name: "danger" },
+		{ hex: "#292b2c", name: "inverse" },
+		{ hex: "#f7f7f7", name: "faded" },
+	]
+
+	function getHexColor(name) {
+		var hexColor = bootstrapColors.filter(el => el.name == name);
+		return hexColor[0].hex;
+	}
+
 	const height = 100;
 	const width = 600;
 	const buffer = 10;
@@ -74,20 +89,10 @@ getExpenses();
 
 
 			<svg {height} {width}>
-				<!-- <g transform="translate(0 70)">
-					<rect width="50" height="25" fill="red" />
-				</g>
-				<g transform="translate(51 60)">
-					<rect width="50" height="35" fill="red" />
-				</g>
-				<g transform="translate(102 45)">
-					<rect width="50" height="50" fill="red" />
-				</g> -->
-
 				<g class='bars' transform="translate(-52 50)">
 					{#each labels as month, i}
 						{#each expenses.filter(el => el.monthShort == month) as expense}
-							<rect
+							<rect fill={getHexColor(tagMin.tagColor)}
 							x="{xScale(i) + 2}"
 							y="{yScale(sum(expenses, d => d.amount))}"
 							width="{50 - 4}"
